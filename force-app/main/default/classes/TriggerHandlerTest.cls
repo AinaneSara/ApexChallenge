@@ -17,27 +17,34 @@ private class TriggerHandlerTest {
         // Create test data
         Account testAccount = TestDataFactory.createTestAccount('Test Account');
         insert testAccount;
-
+        
+        Account olAccount = testAccount;
+        olAccount.Activated__c = False;
+        
         Contact testContact = TestDataFactory.createTestContact(testAccount, 'Test Contact');
         insert testContact;
+        
+        Contact oldContact = testContact ;
+        oldContact.Activated__c = False;
 
-        Contact testSecondContact = TestDataFactory.createTestContact(testAccount, 'Test Second Contact');
-        insert testSecondContact;
+        
 
         // Set up initial conditions
         testAccount.Activated__c = true;
+        testContact.Activated__c = true; 
 
 
         update testAccount;
-
+        update testContact;
+      
         // Call the trigger handler methods
         Test.startTest();
         TriggerHandler.handleAccountActivation(
-            new Map<Id, Contact>{testContact.Id => testContact},
+            new Map<Id, Contact>{testContact.Id => oldContact},
             new Map<Id, Contact>{testContact.Id => testContact}
         );
         TriggerHandler.handleContactActivation(
-            new Map<Id, Account>{testAccount.Id => testAccount},
+            new Map<Id, Account>{testAccount.Id => olAccount},
             new Map<Id, Account>{testAccount.Id => testAccount}
         );
         Test.stopTest();

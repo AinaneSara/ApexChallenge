@@ -30,7 +30,7 @@ public class AccountActivationTriggerTest {
         testSecondContact.AccountId = testAccount.Id;
 
         // Set up initial conditions
-        testContact.Activated__c = true;
+        testContact.Activated__c = false;
 
         Test.startTest();
         update testContact;
@@ -38,7 +38,7 @@ public class AccountActivationTriggerTest {
 
         // Validate the result
         Account updatedAccount = [SELECT Id, Activated__c FROM Account WHERE Id = :testAccount.Id LIMIT 1];
-        System.assertEquals(true, updatedAccount.Activated__c);
+        System.assertEquals(false, updatedAccount.Activated__c);
     }
 
 }

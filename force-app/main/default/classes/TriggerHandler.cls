@@ -17,8 +17,13 @@ public class TriggerHandler {
     public static void handleContactActivation(Map<Id, Account> oldAccountMap ,Map<Id, Account> newAccountMap) {
         List<Id> accountIdList = new List<Id>();
         for (Account updatedAccount: newAccountMap.Values()) {
-            if (updatedAccount.Activated__c != oldAccountMap.get(updatedAccount.Id).Activated__c) {
-                accountIdList.add(updatedAccount.Id);
+            if(oldAccountMap != null){
+                if (updatedAccount.Activated__c != oldAccountMap.get(updatedAccount.Id).Activated__c) {
+                    accountIdList.add(updatedAccount.Id);                
+                }
+                else {
+                    accountIdList =  new List<Id>(newAccountMap.KeySet());
+                }
             }         
             Map<Id, List<Contact>> mapContactsToUpdate = AccountHandler.getChildContactIds(accountIdList);
             AccountHandler.updateContacts(mapContactsToUpdate);
@@ -34,9 +39,17 @@ public class TriggerHandler {
    public static void handleAccountActivation(Map<Id, Contact> oldContactMap, Map<Id, Contact> newContactMap ) {
         List<Id> contactIdList = new List<Id>();
         for (Contact updatedContact : newContactMap.Values()) {
-            if (updatedContact.Activated__c != oldContactMap.get(updatedContact.Id).Activated__c) {
-                 contactIdList.add(updatedContact.Id);
+             if(oldContactMap != null){
+                 if (updatedContact.Activated__c != oldContactMap.get(updatedContact.Id).Activated__c) {
+                     contactIdList.add(updatedContact.Id);
+                  }
+             }
+            else{ 
+                for(Contact con :newContactMap.Values()){
+                    contactIdList.add(con.Id);
                 }
+                
+            }
             List<Id> updateAccounts = ContactHandler.updateAccounts(contactIdList);
             Map<Id, List<Contact>> mapContactsToUpdate = AccountHandler.getChildContactIds(updateAccounts);
             for (Id key : mapContactsToUpdate.keySet()) {

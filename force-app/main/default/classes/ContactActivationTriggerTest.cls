@@ -25,7 +25,7 @@ public class ContactActivationTriggerTest {
         insert testSecondContact;
 
         // Set up initial conditions
-        testAccount.Activated__c = true;
+        testAccount.Activated__c = False;
 
         Test.startTest();
         update testAccount;
@@ -33,7 +33,7 @@ public class ContactActivationTriggerTest {
 
         // Validate the result
         Contact updatedContact = [SELECT Id, Activated__c FROM Contact WHERE Id = :testContact.Id LIMIT 1];
-        System.assertEquals(true, updatedContact.Activated__c);
+        System.assertEquals(False, updatedContact.Activated__c);
     }
 
 

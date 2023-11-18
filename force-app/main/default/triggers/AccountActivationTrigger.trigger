@@ -6,8 +6,11 @@
  * @last modified by  : sara.aiane@gmail.com
 **/
 trigger AccountActivationTrigger on Account (after update) {
-    if (TriggerHandler.inFistTime) {
-        TriggerHandler.handleContactActivation(Trigger.oldMap, Trigger.newMap);
-        TriggerHandler.inFistTime = false;
-    }
+    
+    if (Trigger.isAfter && Trigger.isUpdate)
+        
+       if (TriggerHandler.inFistTime) {
+          TriggerHandler.handleContactActivation(Trigger.oldMap, Trigger.newMap);
+          TriggerHandler.inFistTime = false;   
+       }  
 }
