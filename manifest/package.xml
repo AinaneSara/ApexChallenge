@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>AccountActivationTriggerTest</members>
+		<members>AccountHandler</members>
+		<members>AccountHandlerTest</members>
+		<members>AccountSelector</members>
+		<members>AccountSelectorTest</members>
+		<members>ContactActivationTriggerTest</members>
+		<members>ContactHandler</members>
+		<members>ContactHandlerTest</members>
+		<members>ContactSelector</members>
+		<members>TestDataFactory</members>
+		<members>TriggerHandler</members>
+		<members>TriggerHandlerTest</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>ApexTrigger</name>
+	</types>
+	<version>58.0</version>
+</Package>
