@@ -1,18 +1,82 @@
-# Salesforce DX Project: Next Steps
+# Salesforce Apex Implementation - README
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+## Overview
 
-## How Do You Plan to Deploy Your Changes?
+This repository contains an implementation of Salesforce Apex classes and a trigger handler framework designed to efficiently manage triggers related to Contacts and Accounts. The codebase follows best practices, including the use of selector layers, a trigger handler framework, and a TestDataFactory for robust testing.
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+## Implementation Details
 
-## Configure Your Salesforce DX Project
+### Apex Classes
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+#### `ContactSelector`
 
-## Read All About It
+The `ContactSelector` class provides methods to retrieve Contact records based on specified criteria. It is designed as a selector layer to encapsulate the logic for querying Contact records.
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+- **Methods:**
+  - `retriveContactsWithAccountIds(List<Id> accountIds): List<Contact>`: Retrieves contacts associated with a list of Account Ids.
+  - `retriveContactsWithIds(List<Id> contactIds): List<Contact>`: Retrieves contacts based on a list of Contact Ids.
+
+#### `AccountSelector`
+
+The `AccountSelector` class follows a similar structure to `ContactSelector` and provides methods to retrieve Account records.
+
+- **Methods:**
+  - `retriveAccountsWithIds(Set<Id> ids): List<Account>`: Retrieves accounts based on a set of Account Ids.
+
+#### `TriggerHandler`
+
+The `TriggerHandler` class acts as a framework to handle trigger operations related to Contacts and Accounts. It includes two main methods:
+
+- `handleContactActivation(Map<Id, Account> oldAccountMap, Map<Id, Account> newAccountMap)`: Handles the activation/deactivation of contacts related to Accounts.
+- `handleAccountActivation(Map<Id, Contact> oldContactMap, Map<Id, Contact> newContactMap)`: Handles the activation/deactivation of Accounts related to Contacts.
+
+### Test Data Factory - `TestDataFactory`
+
+The `TestDataFactory` class is responsible for creating test data to be used in unit tests. It includes methods to create test accounts and contacts with various configurations.
+
+- **Methods:**
+  - `createTestAccounts(Integer numberOfAccounts): List<Account>`: Creates a specified number of test accounts.
+  - `createTestContacts(List<Account> relatedAccounts, Integer numberOfContactsPerAccount): List<Contact>`: Creates test contacts related to a list of accounts.
+
+## Testing
+
+The implementation includes comprehensive unit tests to achieve 100% test coverage. The test classes use the Salesforce `Test.StartTest()` and `Test.StopTest()` methods to ensure proper execution context.
+
+### Test Classes
+
+#### `ContactSelectorTest`
+
+This test class covers the methods in the `ContactSelector` class.
+
+- `testRetrieveContactsWithAccountIds()`: Tests the `retriveContactsWithAccountIds` method.
+- `testRetrieveContactsWithIds()`: Tests the `retriveContactsWithIds` method.
+
+#### `AccountSelectorTest`
+
+This test class covers the methods in the `AccountSelector` class.
+
+- `testRetrieveAccountsWithIds()`: Tests the `retriveAccountsWithIds` method.
+
+#### `TriggerHandlerTest`
+
+This test class covers the methods in the `TriggerHandler` class. It uses the `Test.StartTest()` and `Test.StopTest()` methods.
+
+- `testHandleContactActivation()`: Tests the `handleContactActivation` method.
+- `testHandleAccountActivation()`: Tests the `handleAccountActivation` method.
+
+### Test Data
+
+The tests use dynamically generated test data created by the `TestDataFactory` class. This ensures that the tests are isolated and independent of existing data in the Salesforce org.
+
+## Usage
+
+To use these classes in your Salesforce org:
+
+1. Deploy the Apex classes to your Salesforce environment.
+2. Incorporate the trigger handler framework into your trigger logic.
+3. Utilize the selector layers for efficient and encapsulated data retrieval.
+4. Leverage the `TestDataFactory` class to create test data for unit tests.
+
+## Contribution
+
+Feel free to contribute to the improvement of this implementation by submitting issues or pull requests. Your feedback is highly appreciated!
